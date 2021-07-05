@@ -1,2 +1,5 @@
+#Files to ignore
+
 fullstackopen.code-workspace
 /.vscode
+
