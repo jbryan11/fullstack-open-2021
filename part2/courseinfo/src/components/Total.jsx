@@ -1,13 +1,13 @@
-const Total = ({ course }) => {
+const Total = ({ parts }) => {
 	let initValue = 0;
-	const sum = course.parts.reduce(
+	const sum = parts.reduce(
 		(prev, current) => prev + current.exercises,
 		initValue
 	);
 	return (
-		<p>
+		<h4>
 			<strong>Number of exercises {sum}</strong>
-		</p>
+		</h4>
 	);
 };
 

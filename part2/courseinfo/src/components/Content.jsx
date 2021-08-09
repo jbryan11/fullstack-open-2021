@@ -1,11 +1,11 @@
-import Part from './Part.jsx'
-const Content = ({ course }) => {
-    return (
-      <div>
-        <Part part={course.parts[0]} />
-        <Part part={course.parts[1]} />
-        <Part part={course.parts[2]} />
-      </div>
-    )
-  }
-  export default Content
+import Part from "./Part.jsx";
+const Content = ({ parts }) => {
+	return (
+		<div>
+			{parts.map((coursePart) => (
+				<Part key={coursePart.id} part={coursePart} />
+			))}
+		</div>
+	);
+};
+export default Content;
