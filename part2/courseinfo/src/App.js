@@ -1,6 +1,6 @@
 import React from "react";
-import Course from '../components/Course'
-  
+import Course from './components/Course.jsx'
+
   const App = () => {
     const course = {
       name: 'Half Stack application development',

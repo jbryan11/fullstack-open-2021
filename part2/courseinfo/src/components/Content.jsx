@@ -1,4 +1,4 @@
-import React from 'react'
+import Part from './Part.jsx'
 const Content = ({ course }) => {
     return (
       <div>
