@@ -16,7 +16,7 @@
 
 ## What I Learned
 
-### Part 1d
+### Part 1
 1.  Handling complex states - e.g object states, array states...
 2.  Update object state properties efficiently.
 3.  Performing mutation directly to a state does work sometimes <br/>
@@ -29,3 +29,8 @@
 8.  Use the available debugging tools that browsers or IDEs offer to better understand the bug that caused the error.
 9.   Hooks like <code>useState</code> should not be called inside loops, conditional expressions, and function defining a component. Instead, it should be called in a function that defines a React Component.
 10. Do not define component inside of another component.
+### Part 2
+1.  When using a <code>console.log</code>, do not concatenate things. Instead use comma to separate those elements.
+2.  Create my custom snippets in vscode.
+3.  Adding key attributes of objects in an array lets React know how to update the components that have been changed and will be subject to re-render.
+4.  Use index arrays for items that is static, no ids, or is never reordered or filtered. It is not advisable to use this as it can confuse React identifying DOM elements.
