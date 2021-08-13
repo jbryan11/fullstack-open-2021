@@ -34,3 +34,8 @@
 2.  Create my custom snippets in vscode.
 3.  Adding key attributes of objects in an array lets React know how to update the components that have been changed and will be subject to re-render.
 4.  Use index arrays for items that is static, no ids, or is never reordered or filtered. It is not advisable to use this as it can confuse React identifying DOM elements.
+5.  The Javascript's Event loop and how does it work along with the browser engine.
+6.  Javascript engines are single-threaded but uses asynchronous models to run IO operations so that the browser would not freeze during an instance.
+7.   Axios, a promise-based library, is used for establishing communication and fetch data from the server.
+8.  Promises have  three states : Pending - the final value isn't available yet ; Fullfilled - operation is completed and final value is available ; Rejected - error occured that prevented the final value being determined.
+9.  Effects Hook performs side effects or like a background process in function component. A common examples of using the hook is by Data fetching.
