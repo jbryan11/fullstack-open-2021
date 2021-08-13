@@ -1,33 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import InputForm from "./components/InputForm";
 import Input from "./components/Input";
 import Persons from "./components/Persons";
+import axios from "axios";
 const App = () => {
-	const [persons, setPersons] = useState([
-		{ name: "Arto Hellas", phone: "034-123456" },
-		{ name: "Ada Lovelace", phone: "39-44-5323523" },
-		{ name: "Dan Abramov", phone: "12-43-234345" },
-		{ name: "Mary Poppendieck", phone: "39-23-6423122" },
-	]);
+	const [persons, setPersons] = useState([]);
 	const [newName, setNewName] = useState("");
-	const [newPhone, setNewPhone] = useState("");
+	const [newNumber, setNewNumber] = useState("");
 	const [filterInput, setFilterInput] = useState("");
+
+	useEffect(() => {
+		axios
+			.get("http://localhost:3001/persons")
+			.then((response) => {
+				const data = response.data
+				setPersons(data)
+				console.log("Data: ", data);
+			})
+			;
+	}, []);
 	const handleInputName = (event) => {
 		setNewName(event.target.value);
 	};
-	const handleInputPhone = (event) => {
-		setNewPhone(event.target.value);
+	const handleInputNumber = (event) => {
+		setNewNumber(event.target.value);
 	};
 	const handleFilterInput = (event) => {
 		setFilterInput(event.target.value);
 	};
 	const addNewName = (event) => {
 		event.preventDefault();
-		setPersons([{ name: newName, phone: newPhone }, ...persons]);
+		setPersons([{ name: newName, number: newNumber }, ...persons]);
 		alert(`${newName} has already been added to phonebook`);
 		setNewName("");
-		setNewPhone("");
+		setNewNumber("");
 	};
 	const fitlerResult = !filterInput
 		? persons
@@ -41,11 +48,15 @@ const App = () => {
 			<Filter handler={handleFilterInput} value={filterInput} />
 			<h2>Add new Phone</h2>
 			<InputForm formHandler={addNewName}>
-				<Input handler={handleInputName} value={newName}>Name</Input>
-				<Input handler={handleInputPhone} value={newPhone}>Phone</Input>
+				<Input handler={handleInputName} value={newName}>
+					Name
+				</Input>
+				<Input handler={handleInputNumber} value={newNumber}>
+					Phone
+				</Input>
 			</InputForm>
 			<h2>Numbers</h2>
-			<Persons list={fitlerResult}/>
+			<Persons list={fitlerResult} />
 		</div>
 	);
 };

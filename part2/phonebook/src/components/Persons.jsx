@@ -1,8 +1,11 @@
-const Persons=({list})=>{
-    return list.map((person) => (
-        <p key={person.name}>
-            {person.name} {person.phone}
-        </p>
-    ))
-}
-export default Persons
+const Persons = ({ list }) => {
+
+	if (!list) return <p>Loading...</p>;
+
+	return list.map((person) => (
+		<p key={person.name}>
+			{person.name} {person.number}
+		</p>
+	));
+};
+export default Persons;
