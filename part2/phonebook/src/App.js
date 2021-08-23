@@ -11,14 +11,11 @@ const App = () => {
 	const [filterInput, setFilterInput] = useState("");
 
 	useEffect(() => {
-		axios
-			.get("http://localhost:3001/persons")
-			.then((response) => {
-				const data = response.data
-				setPersons(data)
-				console.log("Data: ", data);
-			})
-			;
+		axios.get("http://localhost:3001/persons").then((response) => {
+			const data = response.data;
+			setPersons(data);
+			
+		});
 	}, []);
 	const handleInputName = (event) => {
 		setNewName(event.target.value);
@@ -29,12 +26,21 @@ const App = () => {
 	const handleFilterInput = (event) => {
 		setFilterInput(event.target.value);
 	};
-	const addNewName = (event) => {
-		event.preventDefault();
-		setPersons([{ name: newName, number: newNumber }, ...persons]);
-		alert(`${newName} has already been added to phonebook`);
+	function resetField() {
 		setNewName("");
 		setNewNumber("");
+	}
+	const addNewName = (event) => {
+		event.preventDefault();
+		const newPhone = {
+			name: newName,
+			number: newNumber,
+		};
+		axios.post("http://localhost:3001/persons", newPhone).then((response) => {
+			setPersons(persons.concat(response.data));
+			alert(`${newName} has already been added to phonebook`);
+			resetField();
+		});
 	};
 	const fitlerResult = !filterInput
 		? persons
