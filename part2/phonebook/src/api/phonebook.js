@@ -17,5 +17,13 @@ function addPerson(form) {
 			console.error(error);
 		});
 }
-
-export default { getAll, addPerson };
+function deletePerson(id) {
+	return axios
+		.delete(`${baseUrl}/${id}`)
+		.then((response) => response.status)
+		.catch((error) => {
+			console.error(error);
+		});
+}
+// eslint-disable-next-line
+export default {getAll, addPerson, deletePerson};

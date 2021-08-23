@@ -3,7 +3,7 @@ import Filter from "./components/Filter";
 import InputForm from "./components/InputForm";
 import Input from "./components/Input";
 import Persons from "./components/Persons";
-import phonebook from "../api/phonebook";
+import phonebook from "./api/phonebook";
 const App = () => {
 	const [persons, setPersons] = useState([]);
 	const [newName, setNewName] = useState("");
@@ -22,6 +22,18 @@ const App = () => {
 	const handleFilterInput = (event) => {
 		setFilterInput(event.target.value);
 	};
+	const deletePerson = (event) => {
+		let confirmation = window.confirm(
+			"Do you want to delete this person from the phonebook?"
+		);
+		if (confirmation) {
+			phonebook.deletePerson(event.target.value).then((status) => {
+				status === 200
+					? phonebook.getAll().then((data) => setPersons(data))
+					: alert(`$Person with id ${event.target.value} has not been deleted due to error`);
+			});
+		}
+	};
 	function resetField() {
 		setNewName("");
 		setNewNumber("");
@@ -32,8 +44,7 @@ const App = () => {
 			name: newName,
 			number: newNumber,
 		};
-		phonebook.addPerson(newPhone)
-		.then((data) => {
+		phonebook.addPerson(newPhone).then((data) => {
 			setPersons(persons.concat(data));
 			alert(`${newName} has already been added to phonebook`);
 			resetField();
@@ -59,7 +70,7 @@ const App = () => {
 				</Input>
 			</InputForm>
 			<h2>Numbers</h2>
-			<Persons list={fitlerResult} />
+			<Persons list={fitlerResult} deleteHandler={deletePerson} />
 		</div>
 	);
 };
