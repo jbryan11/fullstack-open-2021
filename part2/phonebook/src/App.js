@@ -4,11 +4,14 @@ import InputForm from "./components/InputForm";
 import Input from "./components/Input";
 import Persons from "./components/Persons";
 import phonebook from "./api/phonebook";
+import Notifications from "./components/Notifications";
 const App = () => {
 	const [persons, setPersons] = useState([]);
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
 	const [filterInput, setFilterInput] = useState("");
+	const [notificationMessage, setNotificationMessage] = useState(null);
+	const [isError, setIsError] = useState(false);
 
 	useEffect(() => {
 		phonebook.getAll().then((data) => setPersons(data));
@@ -27,18 +30,31 @@ const App = () => {
 		setNewName("");
 		setNewNumber("");
 	}
+	function notifyUser(isErr, message) {
+		setIsError(isErr);
+		setNotificationMessage(message);
+		setTimeout(() => {
+			setNotificationMessage(null);
+		}, 5000);
+	}
+	function getPersons() {
+		phonebook.getAll().then((data) => setPersons(data));
+	}
 	const deletePerson = (event) => {
 		let confirmation = window.confirm(
 			"Do you want to delete this person from the phonebook?"
 		);
 		if (confirmation) {
-			phonebook.deletePerson(event.target.value).then((status) => {
-				status === 200
-					? phonebook.getAll().then((data) => setPersons(data))
-					: alert(
-							`$Person with id ${event.target.value} has not been deleted due to error`
-					  );
-			});
+			phonebook
+				.deletePerson(event.target.value)
+				.then((status) => {
+					if (status === 200) getPersons();
+					
+				})
+				.catch((error) => {
+					console.error(error);
+					notifyUser(1, "This person has already been deleted from the server.");
+				});
 		}
 	};
 	const updatePerson = (currentId, newest) => {
@@ -46,14 +62,16 @@ const App = () => {
 			`The person, ${newName} is already added to phonebook, replace old number with a new one?`
 		);
 		if (needUpdate) {
-			phonebook.updatePerson(currentId, newest).then((status) => {
-				status === 200
-					? phonebook.getAll().then((data) => {
-							setPersons(data);
-							resetField()
-					  })
-					: alert(`The person was not updated. Please try again.`);
-			});
+			phonebook
+				.updatePerson(currentId, newest)
+				.then((status) => {
+					if (status === 200) getPersons();
+					resetField();
+				})
+				.catch((error) => {
+					console.error(error);
+					notifyUser(true, `The person was not updated. Please try again.`);
+				});
 		}
 	};
 	const checkPerson = () => {
@@ -64,7 +82,7 @@ const App = () => {
 	const addPerson = (person) => {
 		phonebook.addPerson(person).then((data) => {
 			setPersons(persons.concat(data));
-			alert(`${newName} has already been added to phonebook`);
+			notifyUser(false, `${newName} has been added to phonebook`);
 			resetField();
 		});
 	};
@@ -88,6 +106,7 @@ const App = () => {
 
 	return (
 		<div>
+			<Notifications isError={isError} message={notificationMessage} />
 			<h2>Phonebook</h2>
 			<Filter handler={handleFilterInput} value={filterInput} />
 			<h2>Add new Phone</h2>

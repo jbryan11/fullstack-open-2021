@@ -21,17 +21,12 @@ function deletePerson(id) {
 	return axios
 		.delete(`${baseUrl}/${id}`)
 		.then((response) => response.status)
-		.catch((error) => {
-			console.error(error);
-		});
+		
 }
 function updatePerson(id, data) {
 	return axios
 		.put(`${baseUrl}/${id}`, data)
 		.then((response) => response.status)
-		.catch((error) => {
-			console.error(error);
-		});
 }
 // eslint-disable-next-line
 export default { getAll, addPerson, deletePerson, updatePerson };

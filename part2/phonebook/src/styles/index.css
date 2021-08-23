@@ -1,0 +1,20 @@
+
+.container{
+    width: 100%;
+    height: max-content;
+    
+}
+.notification{
+    padding: 0.2rem;
+    box-sizing: border-box;
+}
+.success{
+    color:green;
+    border: green solid 1px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.error{
+    color: red;
+    border: red solid 1px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
