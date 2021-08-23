@@ -14,6 +14,11 @@
 
 * [Course Information, Anecdotes, Unicafe](https://github.com/jbryan11/fullstack-open-2021/tree/main/part1)
 
+##### Part 2
+### Communicating with the Server
+
+* [Rendering Collection, Forms, Getting data from server, Altering data in server, Adding styles to React App](https://github.com/jbryan11/fullstack-open-2021/tree/main/part2)
+
 ## What I Learned
 
 ### Part 1
