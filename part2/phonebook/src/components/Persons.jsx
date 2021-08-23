@@ -1,6 +1,6 @@
 const Persons = ({ list, deleteHandler }) => {
 
-	if (!list) return <p>Please wait...</p>;
+	if (list.length === 0) return <p>There are no person added to the phonebook.</p>;
 
 	return list.map((person) => (
 		
