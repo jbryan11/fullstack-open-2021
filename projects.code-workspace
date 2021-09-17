@@ -1,0 +1,33 @@
+{
+	"folders": [
+		{
+			"path": "./part1/anecdotes"
+		},
+		{
+			"path": "./part1/courseinfo"
+		},
+		{
+			"path": "./part1/unicafe"
+		},
+		{
+			"path": "./part2/courseinfo"
+		},
+		{
+			"path": "./part2/dataforcountries"
+		},
+		{
+			"path": "./part2/phonebook"
+		},
+	],
+	"settings": {
+		"emmet.includeLanguages": {
+			"javascript": "javascriptreact"
+		},
+		"git.ignoreLimitWarning": true,
+	},
+	"extensions": {
+		"recommendations": [
+			"xabikos.javascriptsnippets"
+		]
+	}
+}
