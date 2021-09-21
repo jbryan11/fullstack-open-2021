@@ -1,61 +1,84 @@
-var persons = require("../api/persons");
 var express = require("express");
 var router = express.Router();
+const Person = require("../models/mongo");
 
 function errorFound(name, number) {
-
-	if (fieldIsEmpty(name, number)) return  "Please enter your name and number.";
-	if(nameIsExisting(name)) return "Name already exist.";
+	if (fieldIsEmpty(name, number)) return "Please enter your name and number.";
+	// if (nameIsExisting(name)) return "Name already exist.";
 	return 0;
 }
 function fieldIsEmpty(name, number) {
 	return name && number ? false : true;
 }
 function nameIsExisting(name) {
-	let result = persons.find((person) => person.name.toLowerCase() === name.toLocaleLowerCase());
-	return result ? true : false;
+	return Person.find({ name: name })
+		.then((result) => {
+			result.length > 0 ? true : false;
+		})
+		.catch((err) => {
+			console.error(err);
+		});
 }
 function generateID() {
 	return Math.floor(Math.random() * 2500);
-	
 }
 /* GET users listing. */
-router.get("/persons", (req, res) => {
-	res.json(persons);
+router.get("/persons", (req, res, next) => {
+	Person.find({}).then((result) => {
+		res.json(result);
+	});
 });
-router.post("/persons", (req, res) => {
-	let entry = req.body;
-	let error = errorFound(entry.name,entry.number);
-	if (error) {
-		return res.status(404).render('error',{
-		error:{
-			status: 405,
-			stack: error,
-		},
-		message: `Request not allowed`,
-	})}
-	const newEntry = { id: generateID(), ...entry };
-	persons = [newEntry, ...persons];
-	res.status(200).json(persons);
+router.post("/persons", (req, res, next) => {
+	const entry = req.body;
+	let hasError = errorFound(entry.name, entry.number);
+	if (hasError) {
+		return res.status(400).json({ error: hasError });
+	}
+	const newPerson = new Person({
+		name: entry.name,
+		number: entry.number,
+	});
+	newPerson
+		.save()
+		.then((saved) => {
+			saved ? res.json(saved) : res.status(404).end();
+		})
+		.catch((err) => {
+			console.log(err);
+			next(err);
+		});
 });
 router.get("/persons/:id", (req, res, next) => {
-	let id = parseInt(req.params.id);
-	let person = persons.find((el) => el.id === id);
-	if (!person) {
-		res.status(404).render("error", {
-			error: {
-				status: 404,
-				stack: "Data not found.",
-			},
-			message: `Cannot find ${req.path}`,
+	Person.findById(req.params.id)
+		.then((foundOne) => {
+			foundOne ? res.json(foundOne) : res.status(404).end();
+		})
+		.catch((err) => {
+			console.log(err);
+			next(err);
 		});
-	}
-	res.json(person);
 });
-router.delete("/persons/:id", (req, res) => {
-	const id = parseInt(req.params.id);
-	persons = persons.filter((person) => person.id !== id);
-	console.log(persons);
-	res.status(204).end();
+router.delete("/persons/:id", (req, res, next) => {
+	Person.findByIdAndRemove(req.params.id)
+		.then((result) => {
+			res.status(204).end();
+		})
+		.catch((err) => {
+			next(err);
+		});
 });
+router.put("/persons/:id", (req, res, next) => {
+	const data = req.body;
+	console.log(data);
+	const person = {
+		name: data.name,
+		number: data.number,
+	};
+	Person.findByIdAndUpdate(req.params.id, person, { new: true })
+		.then((updatedAccount) => {
+			res.status(200).json(updatedAccount);
+		})
+		.catch((err) => next(err));
+});
+
 module.exports = router;

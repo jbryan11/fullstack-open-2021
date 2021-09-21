@@ -1,10 +1,15 @@
 var express = require('express');
 var router = express.Router();
-const persons = require('../api/persons.js')
+const Person = require("../models/mongo");
 /* GET users listing. */
 router.get('/', function(req, res) {
-  let number = persons.length
-  res.render('info',{number, timeReceived: new Date(Date.now()).toString()})
+  Person.find({}).then((result) => {
+    let number = result.length
+    res.render('info',{number, timeReceived: new Date(Date.now()).toString()})
+  }).catch((err) => {
+    next(err)
+  });
+  
 });
 
 module.exports = router;

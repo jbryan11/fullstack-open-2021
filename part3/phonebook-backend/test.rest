@@ -1,35 +1,40 @@
 # Get the list of person
-GET http://127.0.0.1:3000/api/persons/
-
+GET http://127.0.0.1:8080/api/persons
 
 ###
 # POST a new entry
 
-POST http://127.0.0.1:3000/api/persons HTTP/1.1
+POST http://127.0.0.1:8080/api/persons HTTP/1.1
 Content-Type: application/json
 
-{"name": "Lifia", "number": "1234567879"}
+{"name": "sabrina", "number": "1234567879"}
 
 ###
 # TEST - No entry
-POST http://127.0.0.1:3000/api/persons HTTP/1.1
+POST http://127.0.0.1:8080/api/persons HTTP/1.1
 Content-Type: application/json
 
 {"name": "", "number": ""}
 
 ###
 # TEST - Name already exist
-POST http://127.0.0.1:3000/api/persons HTTP/1.1
+POST http://127.0.0.1:8080/api/persons HTTP/1.1
 Content-Type: application/json
 
-{"name": "Arto Hellas", "number": "13236586"}
+{"name": "salamu", "number": "13236586"}
 
 ###
 # Get a person using an ID
-GET http://127.0.0.1:3000/api/persons/1 
+GET http://127.0.0.1:8080/api/persons/61477a86e5e6fcfc02364c52
 
 ###
 
 # Delete a specific phonebook entry
 
-DELETE http://127.0.0.1:3000/api/persons/1
+DELETE http://127.0.0.1:3000/api/persons/61477a86e5e6fcfc02364c52
+###
+#Update a specific entry
+PUT http://127.0.0.1:8080/api/persons/614781c8d531c95b38b8fab7 HTTP/1.1
+Content-Type: application/json
+
+{"name": "mentia", "number": "131312131231223423"}
