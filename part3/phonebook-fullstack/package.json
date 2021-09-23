@@ -1,0 +1,28 @@
+{
+  "name": "part3-phonebook-backend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "prod:logs": "heroku logs --tail"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^10.0.0",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "install": "^0.13.0",
+    "mongoose": "^6.0.6",
+    "mongoose-unique-validator": "^2.0.3",
+    "morgan": "~1.9.1",
+    "pug": "^3.0.2"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "nodemon": "^2.0.12"
+  }
+}
