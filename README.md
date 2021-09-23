@@ -19,6 +19,10 @@
 
 * [Rendering Collection, Forms, Getting data from server, Altering data in server, Adding styles to React App](https://github.com/jbryan11/fullstack-open-2021/tree/main/part2)
 
+##### Part 3
+### Programming a server with NodeJS and Express
+
+* [Phonebook Fullstack](https://github.com/jbryan11/fullstack-open-2021/tree/main/part3)
 ## What I Learned
 
 ### Part 1
@@ -44,3 +48,13 @@
 7.   Axios, a promise-based library, is used for establishing communication and fetch data from the server.
 8.  Promises have  three states : Pending - the final value isn't available yet ; Fullfilled - operation is completed and final value is available ; Rejected - error occured that prevented the final value being determined.
 9.  Effects Hook performs side effects or like a background process in function component. A common examples of using the hook is by Data fetching.
+
+### Part 3
+
+1. Setup a simple server using Nodejs and Express.
+2. Deploy a production build to the internet using Heroku.
+3. Create a Cloud Database using MongoDB
+4. Use ODM such as Mongoose to create MongoDB Schema/Models
+5. Perform CRUD Operations using Mongoose.
+6. Use environment variables to store sensitive application variables such as API Tokens for  MongoDB database connection.
+7. Using linter like Eslint to perform syntax checks/enforce styling rules to the code.
