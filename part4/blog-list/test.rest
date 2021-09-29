@@ -1,6 +1,8 @@
 
 GET http://localhost:8080/api/blogs
 ###
+DELETE http://localhost:8080/api/blogs/6154110700fd890e45789234
+###
 POST http://localhost:8080/api/blogs
 Content-Type: application/json
 
@@ -9,4 +11,17 @@ Content-Type: application/json
     "author": "John Doe",
     "url": "www.example.com",
     "likes":100 
- }
+}
+
+###
+
+PUT http://localhost:8080/api/blogs/6154110700fd890e45789232
+Content-Type: application/json
+
+{
+	"title": "This is mine! Fvck off!",
+	"author": "Mira Tachibanka",
+	"url": "http://www.satanic-cult.com/this-is-mine-fvck-off",
+	"blogs": 252,
+	"likes": 112
+}
