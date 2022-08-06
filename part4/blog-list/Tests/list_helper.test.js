@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const listHelper = require('..utils/helper_functions')
+const listHelper = require('../utils/helper_functions')
 const blogList = require('./data')
 test('Testing the dummy function', () => {
     const blogs = []

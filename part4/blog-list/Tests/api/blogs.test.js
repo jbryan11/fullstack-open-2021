@@ -8,11 +8,7 @@ const blogsList = require('../data')
 const { aggregateObject } = require('../../utils/helper_functions')
 beforeEach(async () => {
     await Blogs.deleteMany({})
-    blogsList.forEach(async (blog) => {
-        let blogObj = new Blogs(blog)
-        await blogObj.save()
-        //console.log("saved", blog.title);
-    })
+    await Blogs.insertMany(blogsList)
 })
 describe('HTTP GET Request', () => {
     test('GET list of blogs to /api/blogs', async () => {
