@@ -1,9 +1,9 @@
 
-GET http://localhost:8080/api/blogs
+GET http://localhost:3000/api/blogs
 ###
-DELETE http://localhost:8080/api/blogs/6154110700fd890e45789234
+DELETE http://localhost:3000/api/blogs/6154110700fd890e45789234
 ###
-POST http://localhost:8080/api/blogs
+POST http://localhost:3000/api/blogs
 Content-Type: application/json
 
 {
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:8080/api/blogs/6154110700fd890e45789232
+PUT http://localhost:3000/api/blogs/6154110700fd890e45789232
 Content-Type: application/json
 
 {
@@ -25,3 +25,54 @@ Content-Type: application/json
 	"blogs": 252,
 	"likes": 112
 }
+###
+
+
+# USER API TESTING
+
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "username": "la",
+    "password": "fullstack21part4",
+    "name": "leafy garden"
+}
+###
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "username": "lafleaf51",
+    "password": "fullstack21part4",
+    "name": "leafy garden"
+}
+###
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "username": "lafleaf52",
+    "password": "fullstack21part4",
+    "name": "leafy garden1"
+}
+###
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "username": "lafle231",
+    "password": "fullstack21part4",
+    "name": "leafy garden1"
+}
+###
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "username": "fesasfevdle231",
+    "password": "fullstack21part4",
+    "name": "leafy garden1"
+}
+###
+GET http://localhost:3000/api/users
