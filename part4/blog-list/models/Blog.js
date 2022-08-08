@@ -8,10 +8,12 @@ const schemaBlog = new mongoose.Schema({
         type:Number,
         default: 0,
     },
-    blogs: Number,
+    totalBlogs: Number,
+    creatorUser:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users'
+    }
 })
-
-
 schemaBlog.set('toJSON', {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()
@@ -21,4 +23,5 @@ schemaBlog.set('toJSON', {
 })
 
 
-module.exports = mongoose.model('Blogs', schemaBlog)
+const Blogs = mongoose.model('Blogs', schemaBlog)
+module.exports = Blogs

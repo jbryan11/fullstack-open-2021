@@ -33,17 +33,17 @@ describe('HTTP POST Request', () => {
         author: 'Sashara Tachiavanka',
         url: 'http://www.satanic-cult.com/go-to-hell',
         likes: 341,
-        blogs: 25,
+        totalBlogs: 25,
     }
     const newerBlog = {
         title: 'There is no miracle at this place!',
         author: 'Sashara Tachiavanka',
         url: 'http://www.satanic-cult.com/there-is-no-miracle',
-        blogs: 25,
+        totalBlogs: 25,
     }
     const errBlog = {
         author: 'Sashara Tachiavanka',
-        blogs: 25,
+        totalBlogs: 25,
     }
     test('Successfully created a new blog post', async () => {
         const result = await api.post('/api/blogs').send(newBlog)
@@ -62,7 +62,7 @@ describe('HTTP POST Request', () => {
             'author',
             'url',
             'likes',
-            'blogs',
+            'totalBlogs',
         ])
         expect(blogContent).toMatchObject(newBlog)
     })
@@ -88,7 +88,7 @@ describe('HTTP PUT Request', () => {
             title: 'This is mine! Fvck off!',
             author: 'Mira Tachibanka',
             url: 'http://www.satanic-cult.com/this-is-mine-fvck-off',
-            blogs: 252,
+            totalBlogs: 252,
             likes: 112,
         }
         let response = await api.get('/api/blogs')
@@ -99,7 +99,7 @@ describe('HTTP PUT Request', () => {
             .send(blogChanges)
 
         expect(
-            aggregateObject(updatedBlog, ['title', 'author', 'url', 'likes', 'blogs'])
+            aggregateObject(updatedBlog, ['title', 'author', 'url', 'likes', 'totalBlogs'])
         ).toMatchObject(blogChanges)
     })
 })

@@ -11,7 +11,13 @@ const schemaUser = new mongoose.Schema({
         required: true,
         min: 3
     },
-    name: String
+    name: String,
+    blogs:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Blogs'
+        }
+    ]
 })
 
 schemaUser.set('toJSON',{
@@ -22,4 +28,5 @@ schemaUser.set('toJSON',{
         delete returnedObject.passwordHash
     }
 })
-module.exports = mongoose.model('Users',schemaUser)
+const Users = mongoose.model('Users',schemaUser, 'users')
+module.exports = Users

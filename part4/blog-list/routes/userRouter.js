@@ -10,16 +10,16 @@ function hashPassword(password) {
     return bcryptjs.hashSync(password, 10)
 }
 async function isUsernameUnique(username){
-    let userfound = await userDocument.findOne({ username:username }).setOptions({ strict:true })
+    let userfound = await userDocument.findOne({ username: username }).setOptions({ strict:true })
     return userfound
 }
 /**
  * Displays all the users
- * @returns {array[JSON]} - List of users
+ * @returns {array[Object]} - List of users
  */
 
 router.get('/', async (req, res) => {
-    const usersList = await userDocument.find({})
+    const usersList = await userDocument.find().populate('blogs', { url: 1, title: 1, author: 1 }).exec()
     res.json(usersList)
 })
 /**
