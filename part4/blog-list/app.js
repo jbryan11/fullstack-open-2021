@@ -31,6 +31,12 @@ mongoose.connect(mongodb.MONGODB_URI).then(() => {
     console.log('Plugged successfully!')
 })
 
+app.use(function(req,res,next){
+    if (req.headers.authorization && req.headers.authorization.toLowerCase().startsWith('bearer ')){
+        req.token = req.headers.authorization.substring(7)
+    }
+    next()
+})
 app.use('/', indexRouter)
 app.use('/api', blogsRouter)
 app.use('/api/users', usersRouter)
@@ -40,12 +46,22 @@ app.use('/api/login', loginRouter)
 // 	next(createError(404));
 // });
 
+// Extracts Session Token
+
 // error handler
 app.use(function (err, req, res, next) {
     if (err.name === 'CastError') {
         return res.status(400).send({ error: 'malformatted id' })
     } else if (err.name === 'ValidationError') {
         return res.status(400).json({ error: err.message })
+    }else if (err.name === 'JWSSignatureVerificationFailed') {
+        return res.status(401).json({
+            error: 'invalid token'
+        })
+    }else if (err.name === 'JWTExpired') {
+        return res.status(401).json({
+            error: 'Session Token expired'
+        })
     }
 
     next(err)

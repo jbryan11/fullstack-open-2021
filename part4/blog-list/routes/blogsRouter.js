@@ -5,14 +5,8 @@ const User = require('../models/Users')
 const { isPropsMissing } = require('../utils/helper_functions')
 const jose = require('jose')
 const { PUBLIC_KEY } = require('../utils/keypairs')
-function getSessionToken(authorization){
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')){
-        return authorization.substring(7)
-    }
-    return null
-}
-async function decodeToken(auth, callback) {
-    let token = getSessionToken(auth)
+
+async function decodeToken(token, callback) {
     if (!token){
         callback({ error: 'token is missing or invalid' })
         return null
@@ -26,8 +20,8 @@ router.get('/blogs', async (request, response) => {
 })
 router.post('/blogs', async (request, response) => {
     let data = request.body
-    let { authorization } = request.headers
-    let loginData = await decodeToken(authorization,(err) => {
+    let sessionToken = request.token
+    let loginData = await decodeToken(sessionToken,(err) => {
         return response.status(401).json({ error: err.error })
     })
     const user =  await User.findById(loginData.id)
