@@ -3,14 +3,34 @@ const router = express.Router()
 const Blog = require('../models/Blog')
 const User = require('../models/Users')
 const { isPropsMissing } = require('../utils/helper_functions')
+const jose = require('jose')
+const { PUBLIC_KEY } = require('../utils/keypairs')
+function getSessionToken(authorization){
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')){
+        return authorization.substring(7)
+    }
+    return null
+}
+async function decodeToken(auth, callback) {
+    let token = getSessionToken(auth)
+    if (!token){
+        callback({ error: 'token is missing or invalid' })
+        return null
+    }
+    let { payload } = await jose.jwtVerify(token, PUBLIC_KEY)
+    return payload
+}
 router.get('/blogs', async (request, response) => {
     const blogsList = await Blog.find().populate('creatorUser',{ username: 1, name: 1 } ).exec()
     response.json(blogsList)
 })
-
 router.post('/blogs', async (request, response) => {
     let data = request.body
-    const user =  await User.find({})
+    let { authorization } = request.headers
+    let loginData = await decodeToken(authorization,(err) => {
+        return response.status(401).json({ error: err.error })
+    })
+    const user =  await User.findById(loginData.id)
     if (isPropsMissing(data, ['title', 'url'])) {
         return response.status(400).end()
     }
@@ -20,11 +40,11 @@ router.post('/blogs', async (request, response) => {
         url: data.url,
         likes: data.likes,
         totalBlogs: data.totalBlogs,
-        creatorUser: user[0]._id
+        creatorUser: user._id
     })
     const savedBlog = await blog.save()
-    user[0].blogs = user[0].blogs.concat(savedBlog._id)
-    await user[0].save()
+    user.blogs = user.blogs.concat(savedBlog._id)
+    await user.save()
     response.status(201).json(savedBlog)
 })
 router.delete('/blogs/:id', async (request, response) => {
