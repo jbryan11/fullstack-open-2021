@@ -1,21 +1,25 @@
-const process = require('process')
-const { generateKeyPairSync } = require('node:crypto')
-//MONGODB Variables
-const MONGODB_USER = process.env.MONGODB_USER
-const MONGODB_PASS = process.env.MONGODB_PASS
-const MONGODB_DATABASE =
-	process.env.NODE_ENV === 'test'
-	    ? process.env.MONGODB_DATABASE_TEST
-	    : process.env.MONGODB_DATABASE
-const MONGODB_CLUSTER = process.env.MONGODB_CLUSTER
-const MONGODB_URI = `mongodb+srv://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_CLUSTER}.9jnqv.mongodb.net/${MONGODB_DATABASE}?retryWrites=true&w=majority`
-const PORT = process.env.PORT
+const { generateKeyPairSync, createHash } = require('crypto')
+const { readFileSync } = require('fs')
+const { cwd } = require('process')
+const password = readFileSync('password.txt',  { encoding: 'utf-8' })
+const hashPassword = createHash('sha256').update(password,'utf-8').digest('hex')
 
+const { privateKey, publicKey } = generateKeyPairSync('ec',{
+    namedCurve: 'prime256v1',
+    privateKeyEncoding:{
+        type: 'pkcs8',
+        format: 'pem',
+        cipher: 'aes-256-cbc',
+        passphrase: hashPassword
+    },
+    publicKeyEncoding:{
+        type: 'spki',
+        format: 'pem'
+    }
+})
 // ** If publicKeyEncoding and privateKeyEncoding is specified,
 // keyObject.export() is to be called and returns as a generated key pair string, else
 // it is return as a KeyObject
-
-const { privateKey:PRIVATE_KEY, publicKey:PUBLIC_KEY } = generateKeyPairSync('ec',{ namedCurve: 'prime256v1' })
 
 // ** To return a string of key pair without using KeyObject.export() function:
 // generateKeyPairSync('ec', {
@@ -46,5 +50,7 @@ const { privateKey:PRIVATE_KEY, publicKey:PUBLIC_KEY } = generateKeyPairSync('ec
 // crypto.createPrivateKey() of crypto.createPublicKey()
 
 // See more at https://nodejs.org/dist/latest-v16.x/docs/api/crypto.html
-
-module.exports = { PORT, MONGODB_URI, PRIVATE_KEY, PUBLIC_KEY }
+console.log('Private Key:', privateKey)
+console.log('Public Key:', publicKey)
+console.log('Passphrase Hash:', hashPassword)
+console.log(cwd())

@@ -13,7 +13,7 @@ const usersRouter = require('./routes/userRouter')
 const loginRouter = require('./routes/loginRouter')
 var app = express()
 const mongoose = require('mongoose')
-const config = require('./utils/global-vars')
+const mongodb = require('./utils/mongodb_constants')
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'))
 app.set('views', path.join(path.dirname('views'), 'views'))
@@ -27,7 +27,7 @@ app.use(cookieParser())
 // app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(path.dirname('views'), 'views')))
 
-mongoose.connect(config.MONGODB_URI).then(() => {
+mongoose.connect(mongodb.MONGODB_URI).then(() => {
     console.log('Plugged successfully!')
 })
 

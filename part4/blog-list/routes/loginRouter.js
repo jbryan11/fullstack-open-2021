@@ -3,7 +3,7 @@ const router = express.Router()
 const jwt = require('jose')
 const bcrypt = require('bcryptjs')
 const userDocument = require('../models/Users')
-const { PRIVATE_KEY } = require('../utils/global-vars')
+const { PRIVATE_KEY } = require('../utils/keypairs')
 
 
 function passwordHashMatch(password, passwordHash) {
