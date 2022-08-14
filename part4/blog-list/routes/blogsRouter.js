@@ -3,27 +3,14 @@ const router = express.Router()
 const Blog = require('../models/Blog')
 const User = require('../models/Users')
 const { isPropsMissing } = require('../utils/helper_functions')
-const jose = require('jose')
-const { PUBLIC_KEY } = require('../utils/keypairs')
-
-async function decodeToken(token, callback) {
-    if (!token){
-        callback({ error: 'token is missing or invalid' })
-        return null
-    }
-    let { payload } = await jose.jwtVerify(token, PUBLIC_KEY)
-    return payload
-}
+const { passUserToRequest } = require('../middlewares/tokenHandler')
 router.get('/blogs', async (request, response) => {
     const blogsList = await Blog.find().populate('creatorUser',{ username: 1, name: 1 } ).exec()
     response.json(blogsList)
 })
-router.post('/blogs', async (request, response) => {
+router.post('/blogs',passUserToRequest, async (request, response) => {
     let data = request.body
-    let sessionToken = request.token
-    let loginData = await decodeToken(sessionToken,(err) => {
-        return response.status(401).json({ error: err.error })
-    })
+    let loginData = request.user
     const user =  await User.findById(loginData.id)
     if (isPropsMissing(data, ['title', 'url'])) {
         return response.status(400).end()
@@ -41,10 +28,18 @@ router.post('/blogs', async (request, response) => {
     await user.save()
     response.status(201).json(savedBlog)
 })
-router.delete('/blogs/:id', async (request, response) => {
+router.delete('/blogs/:id',passUserToRequest, async (request, response) => {
     let id = request.params.id
-    const result = await Blog.findByIdAndRemove(id)
-    result.id === id ? response.status(204).end() : response.status(400).end()
+    let loginData = request.user
+    const blogData = await Blog.findById(id)
+    if (!blogData.id){
+        return response.status(400).end()
+    }
+    if(loginData.id !== blogData.creatorUser.toString()){
+        return response.status(401).json({ error: 'User not permitted' })
+    }
+    await Blog.findByIdAndRemove(blogData.id)
+    response.status(204).end()
 })
 router.put('/blogs/:id', async (request, response) => {
     let id = request.params.id
