@@ -6,6 +6,7 @@ export default function Login(props) {
 	async function  handleSubmit(event) {
         event.preventDefault()
 		const user = await loginService.login({username, password})
+        window.localStorage.setItem("loggedUser", JSON.stringify(user))
         props.data(user)
 	}
 	return (
